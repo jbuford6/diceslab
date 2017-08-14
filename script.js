@@ -1,64 +1,37 @@
-diceArray = [];
-var btn = document.querySelector('#btn')
-var buttontwo = document.querySelector('#buttontwo')
+var random,
+dieArray = [], 
+genDie = document.querySelector('#gen-die'),
+rollDice = document.querySelector('#roll-dice');
+// sum = document.querySelector('#sum');
 
-document.addEventListener('DOMContentLoaded', function () {
-
-    btn.addEventListener('click', function () {
-        var dice = new Die();
-        diceArray.push(dice);
-    });
-
-    var Die = function () {
-        var roll = Math.floor(Math.random() * 6 + 1);
-        this.value = roll;
-        this.div = document.createElement('div');
-        this.div.className = "box";
-        document.body.append(this.div);
-        this.div.innerText = this.value;
+document.addEventListener('DOMContentLoaded', function(){
+    var Die = function() {
+        var randomNumber = Math.floor((Math.random()*6)+1);
+        this.value = randomNumber;
+        this.dieDiv = document.createElement('div');
+        this.dieDiv.className = 'die-div';
+        document.body.appendChild(this.dieDiv); 
+        this.dieDiv.innerText = randomNumber;
+        this.dieDiv.addEventListener('click', this.roll.bind(this));        
+        this.dieDiv.addEventListener('dblclick', this.removeDiv.bind(this));   
     }
-
-    buttontwo.addEventListener('click', function () {
-        for (var i = 0; i < diceArray.length; i++) {
-            diceArray[i].roll();
+    Die.prototype.roll = function() {
+        this.value = Math.floor((Math.random()*6)+1); 
+        this.dieDiv.innerText = this.value;
+        console.log(this.dieDiv.innerText = this.value);
+        
+    }  
+    Die.prototype.removeDiv = function() {
+        this.dieDiv.remove();
+        dieArray.pop();
+    }  
+    genDie.addEventListener('click', function(){
+        var die = new Die();
+        dieArray.push(die);
+    });
+    rollDice.addEventListener('click', function(){
+        for(var i = 0; i < dieArray.length; i++){
+            dieArray[i].roll();
         }
     });
-
-    Die.prototype.roll = function () {
-        this.value = Math.floor(Math.random() * 6 + 1);
-        this.div.innerText = this.value;
-    }
 });
-
-
-
-
-
-
-// //parent constructor
-// function Person(name, race) {
-//     this.name = name;
-//     this.race = race;
-// }
-
-// //person proto methods
-// Person.prototype.sayName = function() {
-//     console.log(this.name);
-// }
-
-// //child constructors
-// function Male(name, race, beard) {
-//     Person.call(this, name, race);
-//     this.beard = beard;
-// }
-
-// Male.prototype = Object.create(Person.prototype);
-// Male.prototype.constructor = Male;
-
-// Male.prototype.hasBeard = function() {
-//     console.log(this.name + ' has beard: ' + this.beard)
-// }
-
-// var male = new Person('jb', 'asian', true);
-// male.sayName();
-// male.hasBeard();
